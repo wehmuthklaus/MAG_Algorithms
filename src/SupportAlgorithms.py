@@ -52,27 +52,66 @@ def EdgesToMAG(edgeFile):
       A.append(set(sorted(As[n])))
    return A,set(E)
 
-def inducedSubMAG(H, Ai):
+def subDeterminedMAG(H, zeta):
+   """Returns a sub-determined MAG, i.e. a MAG with 
+   aggregated aspects according to the sub-determination 
+   tuple zeta. The tuple zeta has the same number of
+   elements as the number of aspects on the original MAG H, 
+   and for each aspect carries a value 1 or 0, so that only 
+   the aspects marked with 1 will remain on the resulted MAG. 
+   The resulting sub-determined MAG has the edges of the original 
+   MAG projected over the reduced aspect structure given by the 
+   sub-determination.
+   input: MAG H and sub-determination tuple zeta
+   output: Sub-determined MAG Hz
+   """ 
+   E = H[1]
+   Ez = set()
+   asps = list(zeta) + list(zeta)
+   n = len(asps)
+   for e in E:
+      ez = []
+      for i in range(n):
+         if asps[i] != 0:
+            ez.append(e[i])
+      if alg.pi_o(ez) != alg.pi_d(ez): 
+         Ez.add(tuple(ez))
+   A = buildAspectListFromEdges(Ez)
+   return A,Ez
+
+def inducedSubMAG(H, Ai, reduceAspects=True):
    """ Returns the subMAG of MAG H induced by the aspect sublist Ai
    :input MAG H and aspects sublist Ai
    :output The subMAG induced by Ai
    """
-   A = H[0]					# Original MAG Aspect list
-   E = H[1]					# Original MAG Edge set
-   T = alg.CompTuple(A)
-   n = 1
-   for i in range(len(A)):			# n is the number of composite vertices on the original MAG
-      n = n * len(A[i])
-   cv = [0] * n					# list of n = |V(H)| integers
-   for v in its.product(*Ai):			# every composite vertex from aspetcs in Ai
-      cv[alg.D(idxV(v,A), T)-1] = 1
+   E = H[1]
    Ei = set()
    for e in E:
-      o = alg.D(idxV(alg.pi_o(e),A),T)-1	# origin cv numeric representation
-      d = alg.D(idxV(alg.pi_d(e),A),T)-1	# destination cv numeric representation
-      if cv[o] == 1 and cv[d] == 1:
+      if checkAspects(e,Ai):
          Ei.add(e)
-   return Ai,Ei
+   if not reduceAspects:
+      return Ai,Ei
+   Ar = buildAspectListFromEdges(Ei)
+   return Ar,Ei
+
+def checkAspects(e,A):
+   le = len(e)
+   la = len(A)
+   if le != 2*la:				# Wrong sizes
+      return False
+   for i in range(le):
+      if e[i] not in A[i%la]:
+         return False				# Edge Aspect not in A
+   return True
+
+def buildAspectListFromEdges(E):
+   Ar = []
+   n = len(list(E)[0])/2			# number of aspects in Ai
+   for i in range(n):				# build induced aspects
+      A = {e[i] for e in E}
+      A = A.union({e[i+n] for e in E})
+      Ar.append(A)
+   return Ar
 
 def cvToAdjMatrixRow(v, A_H):
    """ Returns the matrix line corresponding to a composite vertex

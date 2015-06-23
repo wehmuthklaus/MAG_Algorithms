@@ -2,7 +2,7 @@ DESCRIPTION
 ------------
 The files provided in this project contain the python source code
 referent to the algorithms described in the paper "MultiAspect Graphs:
-Algebraic representation and algorithms", available at xxx.
+Algebraic representation and algorithms", available at http://arxiv.org/abs/1504.07893.
 
 Folder “src” contains the source code
 Folder “MAG Edge Lists” contains examples of edge lists that can be
