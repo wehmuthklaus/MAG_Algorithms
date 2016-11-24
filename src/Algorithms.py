@@ -294,6 +294,7 @@ def BFS(J_H, T_H, s):
    color = [0] * n			# all vertices are white			   
    frontier = []			# empty queue
    vertices[D(s,T_H)-1] = 1		# python list starts at index 0
+   color[D(s,T_H)-1] = 1		# python list starts at index 0
    distance[D(s,T_H)-1] = 0		# python list starts at index 0
    frontier.append(D(s,T_H)-1)		# python list starts at index 0
    while len(frontier) > 0:
