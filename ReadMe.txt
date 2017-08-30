@@ -1,10 +1,15 @@
 DESCRIPTION
 ------------
-The files provided in this project contain the python source code
-referent to the algorithms described in the paper "MultiAspect Graphs:
-Algebraic representation and algorithms", available at http://arxiv.org/abs/1504.07893.
+The files provided at folder “srcPapers” contain the python source code
+referent to the algorithms described in the paper “On MultiAspect Graphs”
+available at https://arxiv.org/abs/1408.0943
+and to the paper “MultiAspect Graphs:Algebraic representation and algorithms", 
+available at http://arxiv.org/abs/1504.07893.
 
-Folder “src” contains the source code
+The files provided at folder “srcOptimized” provide an optimized implementation build to use less space do represent a MAG, as well as, execute faster.
+
+The files provided at folder “srcWeighted” provide a MAG implementation capable of representing and using weighted edges.
+
 Folder “MAG Edge Lists” contains examples of edge lists that can be
 used to generate Multi-Aspect Graphs.
 
